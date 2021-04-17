@@ -72,10 +72,34 @@ var network = new vis.Network(container, data, options);
 // set the size of the window dynamically
 // hopefully this works
 function refresh() {
+    // create an array of nodes
+    // set position to custom start for Group 9 topology.
+    var newNodes = new vis.DataSet([
+        {id: 1, label: "Router 1", x: getDivWidth()/2 -400, y: getDivHeight()/2 -150},
+        {id: 2, label: "Router 2", x: getDivWidth()/2 -150, y: getDivHeight()/2 -200},
+        {id: 3, label: "Router 3", x: getDivWidth()/2 -200, y: getDivHeight()/2 -100},
+        {id: 4, label: "Router 4", x: getDivWidth()/2 -200, y: getDivHeight()/2 -20},
+        {id: 5, label: "Router 5", x: getDivWidth()/2 -300, y: getDivHeight()/2 +50},
+        {id: 6, label: "Router 6", x: getDivWidth()/2 +0, y: getDivHeight()/2 +0},
+        {id: 7, label: "Router 7", x: getDivWidth()/2 -100, y: getDivHeight()/2 +100},
+        {id: 8, label: "Router 8", x: getDivWidth()/2 -400, y: getDivHeight()/2 +200},
+        {id: 9, label: "Router 9", x: getDivWidth()/2 -200, y: getDivHeight()/2 +200},
+        {id: 10, label: "Router 10", physics: true},
+        {id: 11, label: "Router 11", x: getDivWidth()/2 +0, y: getDivHeight()/2 +200},
+    ]);
+
+    // Provide the data in the vis format
+    const newData = {
+        nodes: newNodes,
+        edges: edges
+    };
+
+    network = new vis.Network(container, newData, option);
+
     network.setOptions({
         width: getDivWidth() + "px",
         height: getDivHeight() + "px",
     });
-    network.fit();
+    
     window.location.reload();
 };
