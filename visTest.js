@@ -76,5 +76,6 @@ function refresh() {
         width: getDivWidth() + "px",
         height: getDivHeight() + "px",
     });
+    network.fit();
     window.location.reload();
 };
