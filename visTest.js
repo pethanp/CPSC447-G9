@@ -71,9 +71,10 @@ var network = new vis.Network(container, data, options);
 
 // set the size of the window dynamically
 // hopefully this works
-$(window).on('resize', function(){
+function refresh() {
     network.setOptions({
         width: getDivWidth() + "px",
         height: getDivHeight() + "px",
     });
-});
+    window.location.reload();
+};
