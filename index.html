@@ -1,9 +1,29 @@
 <html>
 <head>
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link rel="stylesheet" href="dropdown/dropdown.css">
+    <link rel="stylesheet" href="test.css">
 
-    <style src="test.css"></style>
+    <div>
+        <script type="text/javascript" src="buttonFunctions.js"></script>
+        <button onclick="selectStart()">Set Start Node</button>
+        <button onclick="selectDestination()">Set Destination Node</button>
+
+        <div class="dropdown">
+            <button onclick="handleDrop()" class="dropbtn">Select Packet to Send</button>
+            <div id="graphDropdown" class="dropdown-content">
+            <a href="#">insert message</a>
+            <a href="#">insert message</a>
+            <a href="#">insert message</a>
+            <a href="#">insert message</a>
+            <a href="#">insert message</a>
+            </div>
+        </div>
+        <script type="text/javascript" src="dropdown/dropdown.js"></script>
+        <button onclick="sendPacket()">Send Packet</button>
+    </div>
 </head>
+
 <body>
 <div id="mynetwork"></div>
 
