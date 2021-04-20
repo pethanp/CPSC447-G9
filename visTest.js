@@ -1,28 +1,17 @@
-// These will control the size of the HTML canvas that vis.js will draw on
-// and therefore the size of the graph on a webpage will be responsive hopefully
-
-function getDivWidth() {
-    return (window.innerWidth - 100);
-}
-
-function getDivHeight() {
-    return (window.innerHeight - 90);
-}
-
 // create an array of nodes
 // set position to custom start for Group 9 topology.
 var nodes = new vis.DataSet([
-    {id: 1, label: "Router 1", x: getDivWidth()/2 -400, y: getDivHeight()/2 -150},
-    {id: 2, label: "Router 2", x: getDivWidth()/2 -150, y: getDivHeight()/2 -200},
-    {id: 3, label: "Router 3", x: getDivWidth()/2 -200, y: getDivHeight()/2 -100},
-    {id: 4, label: "Router 4", x: getDivWidth()/2 -200, y: getDivHeight()/2 -20},
-    {id: 5, label: "Router 5", x: getDivWidth()/2 -300, y: getDivHeight()/2 +50},
-    {id: 6, label: "Router 6", x: getDivWidth()/2 +0, y: getDivHeight()/2 +0},
-    {id: 7, label: "Router 7", x: getDivWidth()/2 -100, y: getDivHeight()/2 +100},
-    {id: 8, label: "Router 8", x: getDivWidth()/2 -400, y: getDivHeight()/2 +200},
-    {id: 9, label: "Router 9", x: getDivWidth()/2 -200, y: getDivHeight()/2 +200},
-    {id: 10, label: "Router 10", physics: true},
-    {id: 11, label: "Router 11", x: getDivWidth()/2 +0, y: getDivHeight()/2 +200},
+    {id: 1, label: "Router 1"},
+    {id: 2, label: "Router 2"},
+    {id: 3, label: "Router 3"},
+    {id: 4, label: "Router 4"},
+    {id: 5, label: "Router 5"},
+    {id: 6, label: "Router 6"},
+    {id: 7, label: "Router 7"},
+    {id: 8, label: "Router 8"},
+    {id: 9, label: "Router 9"},
+    {id: 10, label: "Router 10"},
+    {id: 11, label: "Router 11"},
 ]);
   
 // create an array of edges
@@ -54,12 +43,10 @@ const data = {
 // set options for the vis graph
 const options = {
     autoResize: true,
-    width: getDivWidth() + 'px',
-    height: getDivHeight() + 'px',
-    layout: {randomSeed: 0},
-    nodes: {
-        fixed:false,
-        physics:false
+    width: '100%',
+    height: '100%',
+    layout: {
+        randomSeed: "0.5070662133956556:1618897481010",
     }
 };
 
@@ -68,14 +55,3 @@ var container = document.getElementById('mynetwork');
 
 // initialize your network!
 var network = new vis.Network(container, data, options);
-
-// set the size of the window dynamically
-// hopefully this works
-function refresh() {
-    network.setOptions({
-        width: getDivWidth() + "px",
-        height: getDivHeight() + "px",
-    });
-    
-    window.location.reload();
-};
