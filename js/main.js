@@ -1,5 +1,5 @@
-const Router = require("./Router.js");
-const IP = require("./IPAddress.js");
+import { Router } from './Router.js';
+import { IP } from './IPAddress.js';
 
 var nodes, edges, network, routers, nodesArray;
 

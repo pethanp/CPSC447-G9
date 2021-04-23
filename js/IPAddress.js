@@ -1,4 +1,4 @@
-class IP {
+export class IP {
     constructor(b1, b2, b3, b4) {
         this.b1 = b1;
         this.b2 = b2;
@@ -35,6 +35,3 @@ class IP {
         return this.b4;
     }
 }
-
-// Export the class
-module.exports = IP;
