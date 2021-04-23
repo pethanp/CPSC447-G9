@@ -1,5 +1,5 @@
-import Router from "./Router.js";
-import IP from "./IPAddress.js";
+const Router = require("./Router.js");
+const IP = require("./IPAddress.js");
 
 var nodes, edges, network, routers, nodesArray;
 
@@ -59,7 +59,5 @@ function startNetwork() {
   // initialize your network!
   network = new vis.Network(container, data, options);
 }
-
-
 
 startNetwork();

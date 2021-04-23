@@ -1,5 +1,8 @@
-export class LSA{
+class LSA{
     constructor(){
         
     }
 }
+
+// Export the class
+module.exports = LSA;

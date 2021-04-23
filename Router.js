@@ -1,4 +1,4 @@
-export class Router {
+class Router {
     constructor(RID, AID) {
         this.AID = AID;
         this.RID = RID;
@@ -20,3 +20,6 @@ export class Router {
         
     }
 }
+
+// Export the class
+module.exports = Router;
