@@ -6,6 +6,7 @@ var nodes, edges, network, routers, nodesArray;
 function startNetwork() {
 
   routers = [];
+  var i;
   for (i = 1; i < 12; i++){
     routers.push(new Router(new IP(192,168,0,i),0));
   }
