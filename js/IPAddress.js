@@ -14,9 +14,6 @@ export class IP {
         return this.IPInt();
     }
     // Setter
-    set IPStr() {
-        return this.IPString();
-    }
     // Method
     setIP(b1, b2, b3, b4) {
         this.b1 = b1;
