@@ -6,13 +6,6 @@ export class IP {
         this.b4 = b4;
         this.IPStr = this.IPString();
     }
-    constructor(){
-        this.b1 = 0;
-        this.b2 = 0;
-        this.b3 = 0;
-        this.b4 = 0;
-        this.IPString = this.IPString();
-    }
     // Getter
     get IPStr() {
         return this.IPString();
