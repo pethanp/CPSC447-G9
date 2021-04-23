@@ -20,6 +20,3 @@ export class Router {
         
     }
 }
-
-// Exports the whole class
-// module.exports = Router;

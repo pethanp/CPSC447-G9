@@ -1,25 +1,24 @@
 import Router from "./Router.js";
+import IP from "./IPAddress.js";
+
+var nodes, edges, network, routers, nodesArray;
 
 function startNetwork() {
 
+  routers = [];
+  for (i = 1; i < 12; i++){
+    routers.push(new Router(new IP(192,168,0,i),0));
+  }
+
+  nodesArray = [];
+  routers.forEach(r => nodesArray.push({id:r.RID.IPInt, label:r.RID.IPStr}));
+
   // create an array of nodes
   // set position to custom start for Group 9 topology.
-  var nodes = new vis.DataSet([
-    { id: 1, label: "Router 1" },
-    { id: 2, label: "Router 2" },
-    { id: 3, label: "Router 3" },
-    { id: 4, label: "Router 4" },
-    { id: 5, label: "Router 5" },
-    { id: 6, label: "Router 6" },
-    { id: 7, label: "Router 7" },
-    { id: 8, label: "Router 8" },
-    { id: 9, label: "Router 9" },
-    { id: 10, label: "Router 10" },
-    { id: 11, label: "Router 11" },
-  ]);
+  nodes = new vis.DataSet(nodesArray);
 
   // create an array of edges
-  var edges = new vis.DataSet([
+  edges = new vis.DataSet([
     { from: 1, to: 3 },
     { from: 1, to: 2 },
     { from: 1, to: 8 },
@@ -39,13 +38,13 @@ function startNetwork() {
   ]);
 
   // Provide the data in the vis format
-  const data = {
+  var data = {
     nodes: nodes,
     edges: edges
   };
 
   // set options for the vis graph
-  const options = {
+  var options = {
     autoResize: true,
     width: '100%',
     height: '100%',
@@ -58,7 +57,7 @@ function startNetwork() {
   var container = document.getElementById('mynetwork');
 
   // initialize your network!
-  var network = new vis.Network(container, data, options);
+  network = new vis.Network(container, data, options);
 }
 
 
