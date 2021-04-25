@@ -1,5 +1,5 @@
 /* Function to set start Node and visually respresent it */
-export function selectStart() {
+function selectStart() {
     var selected = network.getSelectedNodes();
 
     // check if there is any selection
@@ -39,7 +39,7 @@ export function selectStart() {
 }
 
 /* Function to set end Node and visually respresent it */
-export function selectDestination() {
+function selectDestination() {
     let selected = network.getSelectedNodes();
 
     // check if there is any selection
