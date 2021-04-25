@@ -4,7 +4,9 @@ export class IP {
         this.b2 = b2;
         this.b3 = b3;
         this.b4 = b4;
+        /*
         this.IPStr = this.IPString();
+        */
     }
     // Getter
     get IPStr() {
@@ -21,9 +23,11 @@ export class IP {
         this.b3 = b3;
         this.b4 = b4;
     }
+    /*
     IPString() {
         return ""+this.b1+"."+this.b2+"."+this.b3+"."+this.b4;
     }
+    */
     IPInt() {
         return this.b4;
     }
