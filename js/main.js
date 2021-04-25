@@ -1,5 +1,6 @@
 import { Router } from './Router.js';
 import { IP } from './IPAddress.js';
+import { selectStart, selectDestination } from './buttonFunctions';
 
 var nodes, edges, network, routers, nodesArray;
 
@@ -62,3 +63,10 @@ function startNetwork() {
 }
 
 startNetwork();
+
+// bind buttons to methods
+let destinationButton = document.getElementById('destinationButton');
+destinationButton.on("click", selectDestination());
+
+let startButton = document.getElementById('startButton');
+startButton.on("click", selectStart());
