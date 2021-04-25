@@ -1,32 +1,39 @@
-var startNode, endNode;
-
 /* Function to set start Node and visually respresent it */
 function selectStart() {
     var selected = network.getSelectedNodes();
 
     // check if there is any selection
-    if (selected == []) {
-        error("Must select a start Node");
+    if (selected.length === 0) {
+        let e = new Error("Must select a start Node");
+        console.error(e.message);
         return;
     }
 
     // check that selection isn't endNode
-    if (selected[0] == endNode) {
-        error("Can't select end as start node.");
+    if (selected[0] === destinationNode) {
+        let e = new Error("Can't select end as start node.");
+        console.error(e.message);
         return;
     }
 
     // check if there is a current start node, if there isn't then reset startnode color
-    if (startNode != null) {
-        nodes.update([{ id: startNode, color: { background: '#97c2fc' } }]);
+    if (startNode !== null) {
+        nodes.update([{ id: startNode, color: { background: '#97c2fc',
+                                                    highlight: {
+                                                        background: '#97c2fc',
+                                                    }
+                                                } }]);
         startNode = selected[0];
     }
     else {
         startNode = selected[0];
     }
 
-    // change color to green
-    nodes.update([{ id: startNode, color: { background: "#7FFFD4" } }]);
+    // change color to aquamarine
+    nodes.update([{ id: startNode, color: { background: "aquamarine", 
+                                                highlight: {
+                                                    background: "aquamarine",
+                                                    } } }]);
 
     // FIXME: add more functionality for packet sending later
 }
@@ -36,28 +43,37 @@ function selectDestination() {
     let selected = network.getSelectedNodes();
 
     // check if there is any selection
-    if (selected == []) {
-        error("Must select an end Node");
+    if (selected.length === 0) {
+        let e = new Error("Must select an end Node");
+        console.error(e.message);
         return;
     }
 
     // check that selection isn't startNode
-    if (selected[0] == startNode) {
-        error("Can't select start as end node.");
+    if (selected[0] === startNode) {
+        let e = new Error("Can't select start as end node.");
+        console.error(e.message);
         return;
     }
 
     // check if there is a current end node, if there is then reset end node color and replace value
-    if (endNode != null) {
-        nodes.update([{ id: endNode, color: { background: '#97c2fc' } }]);
-        endNode = selected[0];
+    if (destinationNode !== null) {
+        nodes.update([{ id: destinationNode, color: { background: '#97c2fc',
+                                                        highlight: {
+                                                            background: '#97c2fc',
+                                                            }
+                                                        } }]);
+        destinationNode = selected[0];
     }
     else {
-        endNode = selected[0];
+        destinationNode = selected[0];
     }
 
     // change color to orange
-    nodes.update([{ id: endNode, color: { background: "#ff9900" } }]);
+    nodes.update([{ id: destinationNode, color: { background: "orange", 
+                                                highlight: {
+                                                    background: "orange",
+                                                    } } }]);
 
     // FIXME: add more functionality for packet sending later
 }
