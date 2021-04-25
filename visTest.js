@@ -15,23 +15,26 @@ var nodes = new vis.DataSet([
 ]);
   
 // create an array of edges
+// I will set the id of the edges to be from the
+// smaller node to the bigger node, seperated with a dash
+// ex. (1-3)
 var edges = new vis.DataSet([
-    {from: 1, to: 3},
-    {from: 1, to: 2},
-    {from: 1, to: 8},
-    {from: 2, to: 3},
-    {from: 2, to: 6},
-    {from: 3, to: 4},
-    {from: 4, to: 5},
-    {from: 5, to: 6},
-    {from: 5, to: 7},
-    {from: 6, to: 7},
-    {from: 6, to: 10},
-    {from: 7, to: 8},
-    {from: 7, to: 9},
-    {from: 7, to: 11},
-    {from: 8, to: 9},
-    {from: 9, to: 11},
+    {id: '1-3', from: 1, to: 3},
+    {id: '1-2', from: 1, to: 2},
+    {id: '1-8', from: 1, to: 8},
+    {id: '2-3', from: 2, to: 3},
+    {id: '2-6', from: 2, to: 6},
+    {id: '3-4', from: 3, to: 4},
+    {id: '4-5', from: 4, to: 5},
+    {id: '5-6', from: 5, to: 6},
+    {id: '5-7', from: 5, to: 7},
+    {id: '6-7', from: 6, to: 7},
+    {id: '6-10', from: 6, to: 10},
+    {id: '7-8', from: 7, to: 8},
+    {id: '7-9', from: 7, to: 9},
+    {id: '7-11', from: 7, to: 11},
+    {id: '8-9', from: 8, to: 9},
+    {id: '9-11', from: 9, to: 11},
 ]);
   
 // Provide the data in the vis format
@@ -55,3 +58,14 @@ var container = document.getElementById('mynetwork');
 
 // initialize your network!
 var network = new vis.Network(container, data, options);
+
+
+network.on("afterDrawing", function (ctx)
+{
+    var pos = network.getPositions([1, 2]);
+    ctx.strokeStyle = ctx.filStyle = 'green';
+    ctx.moveTo(pos[1].x, pos[1].y);
+    ctx.lineTo(pos[1].x + (pos[2].x-pos[1].x)*50/100, pos[1].y + (pos[2].y - pos[1].y)*50/100);
+    ctx.fill();
+    ctx.stroke();
+});

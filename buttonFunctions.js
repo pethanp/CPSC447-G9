@@ -31,6 +31,7 @@ function selectStart() {
     // FIXME: add more functionality for packet sending later
 }
 
+
 /* Function to set end Node and visually respresent it */
 function selectDestination() {
     let selected = network.getSelectedNodes();
@@ -60,4 +61,18 @@ function selectDestination() {
     nodes.update([{ id: endNode, color: { background: "#ff9900" } }]);
 
     // FIXME: add more functionality for packet sending later
+}
+
+
+/* Function to handle the packet sending animations */
+function sendPacket() {
+    network.on("afterDrawing", function (ctx)
+    {
+        var pos = network.getPositions([1, 2]);
+        ctx.strokeStyle = ctx.filStyle = 'green';
+        ctx.moveTo(pos[1].x, pos[1].y);
+        ctx.lineTo(pos[1].x + (pos[2].x-pos[1].x)*percent/100, pos[1].y + (pos[2].y - pos[1].y)*percent/100);
+        ctx.fill();
+        ctx.stroke();
+    });
 }
