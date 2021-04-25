@@ -5,16 +5,9 @@ export class Router {
         this.LSDB = new Array();
     }
     // Getter
-    get RID() {
-        return this.RID;
-    }
+    
     // Setter
-    set setAID(n) {
-        this.AID = n;
-    }
-    set setRID(n) {
-        this.RID = n;
-    }
+
     // Method
     helloMsg() {
         

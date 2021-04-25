@@ -4,17 +4,9 @@ export class IP {
         this.b2 = b2;
         this.b3 = b3;
         this.b4 = b4;
-        /*
-        this.IPStr = this.IPString();
-        */
+
     }
     // Getter
-    get IPStr() {
-        return this.IPString();
-    }
-    get IPInt() {
-        return this.IPInt();
-    }
     // Setter
     // Method
     setIP(b1, b2, b3, b4) {
@@ -23,12 +15,18 @@ export class IP {
         this.b3 = b3;
         this.b4 = b4;
     }
-    /*
-    IPString() {
+    
+    get IPString() {
         return ""+this.b1+"."+this.b2+"."+this.b3+"."+this.b4;
     }
-    */
-    IPInt() {
+    set IPString(ipstr){
+        this.IPString = ipstr;
+    }
+
+    get IPInt() {
         return this.b4;
+    }
+    set IPInt(b4) {
+        this.b4 = b4;
     }
 }
