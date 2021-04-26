@@ -1,5 +1,3 @@
-var nodes, edges, network, routers, nodesArray, startNode = null, destinationNode = null;
-
 /* Function to set start Node and visually respresent it */
 function selectStart() {
     var selected = network.getSelectedNodes();
