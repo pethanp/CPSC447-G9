@@ -1,8 +1,6 @@
 import { Router } from './Router.js';
 import { IP } from './IPAddress.js';
 
-var nodes, edges, network, routers, nodesArray;
-
 function startNetwork() {
 
   routers = [];
