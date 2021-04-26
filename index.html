@@ -3,13 +3,14 @@
         <script type="module" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
         <link rel="stylesheet" href="dropdown/dropdown.css">
         <link rel="stylesheet" href="test.css">
+
+        <script src="js/buttonFunctions.js"></script>
         <script type="module" src="./js/main.js"></script>
-        <script type="module" src="js/buttonFunctions.js"></script>        
         <script src="./dropdown/dropdown.js"></script>
         
         <div>
-            <button id="startButton">Set Start Node</button>
-            <button id="destinationButton">Set Destination Node</button>
+            <button onclick="selectStart()">Set Start Node</button>
+            <button onclick="selectDestination()">Set Destination Node</button>
             
             <div class="dropdown">
                 <button onclick="handleDrop()" class="dropbtn">Select Packet to Send</button>
