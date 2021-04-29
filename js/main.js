@@ -10,7 +10,11 @@ function startNetwork() {
   }
 
   nodesArray = [];
-  routers.forEach(r => nodesArray.push({id:r.RID.IPInt, label:r.RID.IPStr}));
+  routers.forEach(r => {
+    let info = "ID: " + r.RID.IPInt + "\n" +
+                "LSDB: " + r.LSDB;
+    nodesArray.push({id:r.RID.IPInt, label:r.RID.IPStr, title: info})
+  });
 
   // create an array of nodes
   // set position to custom start for Group 9 topology.
@@ -18,7 +22,7 @@ function startNetwork() {
 
   // create an array of edges
   edges = new vis.DataSet([
-    { from: 1, to: 3 },
+    { from: 1, to: 3, },
     { from: 1, to: 2 },
     { from: 1, to: 8 },
     { from: 2, to: 3 },
