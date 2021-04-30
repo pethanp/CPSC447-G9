@@ -151,13 +151,18 @@ function selectDestination() {
 }
 
 /* Button handler for sending packet using dijkstra's */
-window.sendPacket = function sendPacket() {
+function sendPacket() {
     if (!startNode || !destinationNode) {
         throw new Error("Need to select proper start/end nodes");
     }
 
-    let dist = djikstraAlgorithm(startNode);
+    let funcRet = djikstraAlgorithm(startNode);
+    
+    let prev = funcRet[0];
+    let dist = funcRet[1];
+    
     console.log(dist);
+    console.log(prev);
 }
 
 /* Function to perform dijkstra's algorithm */
@@ -187,7 +192,6 @@ function djikstraAlgorithm(startNode) {
 
        this.network.getConnectedNodes(currNode).forEach(neighbor => {
           let alt = distances[currNode] + get_weight(currNode, neighbor);
-          console.log(neighbor, alt);
           if (alt < distances[neighbor]) {
              distances[neighbor] = alt;
              prev[neighbor] = currNode;
@@ -196,16 +200,15 @@ function djikstraAlgorithm(startNode) {
        });
     }
 
-    console.log(prev);
-    return distances;
+    return [prev, distances];
 }
 
 /* Returns the weight of the edge between nodes curr and adj */
 function get_weight(curr, adj) {
     if (curr < adj) {
-        return parseInt(edges.get(curr+'-'+adj).label);
+        return edges.get(curr+'-'+adj).weight;
     }
     else {
-        return parseInt(edges.get(adj+'-'+curr).label);
+        return edges.get(adj+'-'+curr).weight;
     }
 }
