@@ -161,8 +161,8 @@ function sendPacket() {
     let prev = funcRet[0];
     let dist = funcRet[1];
     
-    console.log(dist);
-    console.log(prev);
+    console.log('distances', dist);
+    console.log('parent array', prev);
 }
 
 /* Function to perform dijkstra's algorithm */
