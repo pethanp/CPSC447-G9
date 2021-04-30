@@ -1,3 +1,75 @@
+/* Priority queue class from javascript online, couldn't
+    get import working for some reason
+     */
+class PriorityQueue {
+    constructor(maxSize) {
+       // Set default max size if not provided
+       if (isNaN(maxSize)) {
+          maxSize = 10;
+        }
+       this.maxSize = maxSize;
+       // Init an array that'll contain the queue values.
+       this.container = [];
+    }
+    // Helper function to display all values while developing
+    display() {
+       console.log(this.container);
+    }
+    // Checks if queue is empty
+    isEmpty() {
+       return this.container.length === 0;
+    }
+    // checks if queue is full
+    isFull() {
+       return this.container.length >= this.maxSize;
+    }
+    enqueue(data, priority) {
+       // Check if Queue is full
+       if (this.isFull()) {
+          console.log("Queue Overflow!");
+          return;
+       }
+       let currElem = new this.Element(data, priority);
+       let addedFlag = false;
+       // Since we want to add elements to end, we'll just push them.
+       for (let i = 0; i < this.container.length; i++) {
+          if (currElem.priority < this.container[i].priority) {
+             this.container.splice(i, 0, currElem);
+             addedFlag = true; break;
+          }
+       }
+       if (!addedFlag) {
+          this.container.push(currElem);
+       }
+    }
+    dequeue() {
+    // Check if empty
+    if (this.isEmpty()) {
+       console.log("Queue Underflow!");
+       return;
+    }
+    return this.container.pop();
+ }
+ peek() {
+    if (isEmpty()) {
+       console.log("Queue Underflow!");
+       return;
+    }
+    return this.container[this.container.length - 1];
+ }
+ clear() {
+    this.container = [];
+    }
+ }
+ // Create an inner class that we'll use to create new nodes in the queue
+ // Each element has some data and a priority
+ PriorityQueue.prototype.Element = class {
+    constructor(data, priority) {
+       this.data = data;
+       this.priority = priority;
+    }
+ };
+
 /* Function to set start Node and visually respresent it */
 function selectStart() {
     var selected = network.getSelectedNodes();
@@ -78,34 +150,62 @@ function selectDestination() {
     // FIXME: add more functionality for packet sending later
 }
 
+/* Button handler for sending packet using dijkstra's */
+window.sendPacket = function sendPacket() {
+    if (!startNode || !destinationNode) {
+        throw new Error("Need to select proper start/end nodes");
+    }
+
+    let dist = djikstraAlgorithm(startNode);
+    console.log(dist);
+}
+
 /* Function to perform dijkstra's algorithm */
 function djikstraAlgorithm(startNode) {
+    // distances of nodes
     let distances = {};
+    distances[startNode] = 0;
  
     // Stores the reference to previous nodes
     let prev = {};
-    let pq = new PriorityQueue(this.nodes.length * this.nodes.length);
+
+    let pq = new PriorityQueue(nodes.length * nodes.length);
  
     // Set distances to all nodes to be infinite except startNode
-    distances[startNode] = 0;
-    pq.enqueue(startNode, 0);
     this.nodes.forEach(node => {
-       if (node !== startNode) distances[node] = Infinity;
-       prev[node] = null;
+        if (node.id !== startNode) {
+            distances[node.id] = Infinity;
+            prev[node.id] = null;
+        }
+        pq.enqueue(node.id, distances[node.id]);
     });
- 
+    
     while (!pq.isEmpty()) {
        let minNode = pq.dequeue();
        let currNode = minNode.data;
        let weight = minNode.priority;
-       this.edges[currNode].forEach(neighbor => {
-          let alt = distances[currNode] + neighbor.weight;
-          if (alt < distances[neighbor.node]) {
-             distances[neighbor.node] = alt;
-             prev[neighbor.node] = currNode;
-             pq.enqueue(neighbor.node, distances[neighbor.node]);
+
+       this.network.getConnectedNodes(currNode).forEach(neighbor => {
+          let alt = distances[currNode] + get_weight(currNode, neighbor);
+          console.log(neighbor, alt);
+          if (alt < distances[neighbor]) {
+             distances[neighbor] = alt;
+             prev[neighbor] = currNode;
+             pq.enqueue(neighbor, distances[neighbor]);
           }
        });
     }
+
+    console.log(prev);
     return distances;
+}
+
+/* Returns the weight of the edge between nodes curr and adj */
+function get_weight(curr, adj) {
+    if (curr < adj) {
+        return parseInt(edges.get(curr+'-'+adj).label);
+    }
+    else {
+        return parseInt(edges.get(adj+'-'+curr).label);
+    }
 }
