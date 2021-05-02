@@ -165,6 +165,10 @@ function sendPacket() {
     console.log('parent array', prev);
 }
 
+function makeEdge() {
+    
+}
+
 /* Function to perform dijkstra's algorithm */
 function djikstraAlgorithm(startNode) {
     // distances of nodes

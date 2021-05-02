@@ -6,13 +6,9 @@
 
 .menu {
   display: flex;
-  width: 310px;
-  height: 310px;
-  border: 2px solid green;
+  width: 100%;
 }
 
-.menu div{
-  width: 500px;
+.menu div {
   padding: 15px;
-  text-align: center;
 }
