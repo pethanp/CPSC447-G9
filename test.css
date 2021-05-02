@@ -1,6 +1,18 @@
 #mynetwork {
-    width: auto;
-    height: auto;
-    border: 1px solid lightgray;
-  }
-  
+  width: auto;
+  height: auto;
+  border: 1px solid lightgray;
+}
+
+.menu {
+  display: flex;
+  width: 310px;
+  height: 310px;
+  border: 2px solid green;
+}
+
+.menu div{
+  width: 500px;
+  padding: 15px;
+  text-align: center;
+}
