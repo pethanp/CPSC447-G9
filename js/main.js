@@ -1,7 +1,7 @@
 import { Router } from './Router.js';
 import { IP } from './IPAddress.js';
 
-function startNetwork() {
+export function startNetwork() {
 
   routers = [];
   var i;
@@ -13,7 +13,7 @@ function startNetwork() {
   routers.forEach(r => {
     let info = "ID: " + r.RID.IPInt + "\n" +
                 "LSDB: " + r.LSDB;
-    nodesArray.push({id:r.RID.IPInt, label:r.RID.IPStr, title: info})
+    nodesArray.push({id:r.RID.IPInt, label:r.RID.IPString, title: info})
   });
 
   // create an array of nodes

@@ -1,76 +1,19 @@
-/* Priority queue class from javascript online, couldn't
-    get import working for some reason
-     */
-class PriorityQueue {
-    constructor(maxSize) {
-       // Set default max size if not provided
-       if (isNaN(maxSize)) {
-          maxSize = 10;
-        }
-       this.maxSize = maxSize;
-       // Init an array that'll contain the queue values.
-       this.container = [];
-    }
-    // Helper function to display all values while developing
-    display() {
-       console.log(this.container);
-    }
-    // Checks if queue is empty
-    isEmpty() {
-       return this.container.length === 0;
-    }
-    // checks if queue is full
-    isFull() {
-       return this.container.length >= this.maxSize;
-    }
-    enqueue(data, priority) {
-       // Check if Queue is full
-       if (this.isFull()) {
-          console.log("Queue Overflow!");
-          return;
-       }
-       let currElem = new this.Element(data, priority);
-       let addedFlag = false;
-       // Since we want to add elements to end, we'll just push them.
-       for (let i = 0; i < this.container.length; i++) {
-          if (currElem.priority < this.container[i].priority) {
-             this.container.splice(i, 0, currElem);
-             addedFlag = true; break;
-          }
-       }
-       if (!addedFlag) {
-          this.container.push(currElem);
-       }
-    }
-    dequeue() {
-    // Check if empty
-    if (this.isEmpty()) {
-       console.log("Queue Underflow!");
-       return;
-    }
-    return this.container.pop();
- }
- peek() {
-    if (isEmpty()) {
-       console.log("Queue Underflow!");
-       return;
-    }
-    return this.container[this.container.length - 1];
- }
- clear() {
-    this.container = [];
-    }
- }
- // Create an inner class that we'll use to create new nodes in the queue
- // Each element has some data and a priority
- PriorityQueue.prototype.Element = class {
-    constructor(data, priority) {
-       this.data = data;
-       this.priority = priority;
-    }
- };
+import { PriorityQueue } from './PriorityQueue.js';
+import { IP } from "./IPAddress.js";
+import { Router } from "./Router.js";
+import { startNetwork } from './main.js';
 
-/* Function to set start Node and visually respresent it */
+// make module functions visible to the window
+window.selectStart = selectStart;
+window.selectDestination = selectDestination;
+window.sendPacket = sendPacket;
+window.makeEdge = makeEdge;
+window.makeRouter = makeRouter;
+window.resetNetwork = resetNetwork;
+window.changeEdge = changeEdge;
+window.removeEdge = removeEdge;
+
+ /* Function to set start Node and visually respresent it */
 function selectStart() {
     var selected = network.getSelectedNodes();
 
@@ -165,8 +108,93 @@ function sendPacket() {
     console.log('parent array', prev);
 }
 
+/* Function to add a new edge to the network */
 function makeEdge() {
+    let fromNode = parseInt(document.getElementById('fromInput').value);
+    let toNode = parseInt(document.getElementById('toInput').value);
+    let weight = parseInt(document.getElementById('weightInput').value);
     
+    // get proper edge id
+    let edgeString = "";
+    if (fromNode < toNode) edgeString = fromNode + "-" + toNode;
+    else edgeString = toNode + "-" + fromNode;
+    
+    // check edge doesn't exist
+    if (edges.get(edgeString) !== null) {
+        throw new Error("Edge already exists!");
+    }
+
+    // add edge
+    edges.add({id: edgeString, from: fromNode, to: toNode, label: '' + weight, weight: weight});
+}
+
+/* Function to change the */
+function changeEdge() {
+    let fromNode = parseInt(document.getElementById('fromInput').value);
+    let toNode = parseInt(document.getElementById('toInput').value);
+    let weight = parseInt(document.getElementById('weightInput').value);
+    
+    // get proper edge id
+    let edgeString = "";
+    if (fromNode < toNode) edgeString = fromNode + "-" + toNode;
+    else edgeString = toNode + "-" + fromNode;
+    
+    // check edge doesn't exist
+    if (edges.get(edgeString) === null) {
+        throw new Error("Edge doesn't exist.");
+    }
+
+    // update weight and label of edge
+    edges.get(edgeString).weight = weight;
+    edges.get(edgeString).label = '' + weight;
+}
+
+/* Function to remove an edge from the network */
+function removeEdge() {
+    let fromNode = parseInt(document.getElementById('fromInput').value);
+    let toNode = parseInt(document.getElementById('toInput').value);
+
+    // get proper edge id
+    let edgeString = "";
+    if (fromNode < toNode) edgeString = fromNode + "-" + toNode;
+    else edgeString = toNode + "-" + fromNode;
+
+    // check if edge doesn't exist
+    if (edges.get(edgeString) === null) {
+        throw new Error("Edge doesn't exist.");
+    }
+
+    edges.remove(edgeString);
+}
+
+/* Function to make a new router/node in the network */
+function makeRouter() {
+    // next available router ID
+    let routerId = nodesArray[nodesArray.length -1].id + 1;
+    
+    // add new router to routers
+    routers.push(new Router(new IP(192,168,0,routerId), 0));
+
+    // add newRouter object to nodesArray
+    let r = routers[routers.length - 1];
+    let info = "ID: " + r.RID.IPInt + "\n" +
+                "LSDB: " + r.LSDB;
+    let newRouter = {id: r.RID.IPInt, label: r.RID.IPString, title: info};
+
+    // add to nodesArray
+    nodesArray.push(newRouter);
+
+    // add to network
+    nodes.add(newRouter);
+}
+
+/* Function to reset the network to the default */
+function resetNetwork() {
+    if (network) {
+        network.destroy();
+    }
+
+    network = startNetwork();
 }
 
 /* Function to perform dijkstra's algorithm */
@@ -181,7 +209,7 @@ function djikstraAlgorithm(startNode) {
     let pq = new PriorityQueue(nodes.length * nodes.length);
  
     // Set distances to all nodes to be infinite except startNode
-    this.nodes.forEach(node => {
+    nodes.forEach(node => {
         if (node.id !== startNode) {
             distances[node.id] = Infinity;
             prev[node.id] = null;
@@ -194,7 +222,7 @@ function djikstraAlgorithm(startNode) {
        let currNode = minNode.data;
        let weight = minNode.priority;
 
-       this.network.getConnectedNodes(currNode).forEach(neighbor => {
+       network.getConnectedNodes(currNode).forEach(neighbor => {
           let alt = distances[currNode] + get_weight(currNode, neighbor);
           if (alt < distances[neighbor]) {
              distances[neighbor] = alt;

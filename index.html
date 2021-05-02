@@ -5,8 +5,8 @@
         <link rel="stylesheet" href="test.css">
 
         <script src="js/networkVariables.js"></script>
-        <script src="js/buttonFunctions.js"></script>
         <script type="module" src="./js/main.js"></script>
+        <script type="module" src="./js/buttonFunctions.js"></script>
         <script src="./dropdown/dropdown.js"></script>
 
         <div class="menu">
@@ -33,11 +33,19 @@
                 <input type="number" id="fromInput">
                 <label for="toInput">To:</label>
                 <input type="number" id="toInput">
+                <label for="edgeWeight">Weight:</label>
+                <input type="number" id="weightInput">
                 <button onclick="makeEdge()">Add Edge</button>
+                <button onclick="changeEdge()">Change Edge Weight</button>
+                <button onclick="removeEdge()">Remove Edge</button>
             </div>
             <div id="routerCreationMenu" class="menuItem3">
                 <h3>Add a new Router:</h3>
+                <label for="edgeConnections">Enter edge Connections (from, to, weight):</label>
+                <input type="text" id="edgeConnections">
+
                 <button onclick="makeRouter()">Add Router</button>
+                <button onclick="resetNetwork()">Reset Network</button>
             </div>
         </div>
     </head>
