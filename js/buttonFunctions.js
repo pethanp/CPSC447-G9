@@ -99,13 +99,16 @@ function sendPacket() {
         throw new Error("Need to select proper start/end nodes");
     }
 
-    let funcRet = djikstraAlgorithm(startNode);
-    
-    let prev = funcRet[0];
-    let dist = funcRet[1];
-    
-    console.log('distances', dist);
-    console.log('parent array', prev);
+
+    let currRouter = routers[startNode];
+    let path = [];
+    path.push(currRouter.RID.IPInt);
+
+    while (currRouter != routers[destinationNode]) {
+        // use router LSDB to find shortest path to destinationNode
+        let nextRouter = routers[currRouter].LSDB.getOutLink(destinationNode);
+        currRouter = routers[nextRouter];
+    }
 }
 
 /* Function to add a new edge to the network */
@@ -220,52 +223,4 @@ function resetNetwork() {
     }
 
     network = startNetwork();
-}
-
-/* Function to perform dijkstra's algorithm */
-function djikstraAlgorithm(startNode) {
-    // distances of nodes
-    let distances = {};
-    distances[startNode] = 0;
- 
-    // Stores the reference to previous nodes
-    let prev = {};
-
-    let pq = new PriorityQueue(nodes.length * nodes.length);
- 
-    // Set distances to all nodes to be infinite except startNode
-    nodes.forEach(node => {
-        if (node.id !== startNode) {
-            distances[node.id] = Infinity;
-            prev[node.id] = null;
-        }
-        pq.enqueue(node.id, distances[node.id]);
-    });
-    
-    while (!pq.isEmpty()) {
-       let minNode = pq.dequeue();
-       let currNode = minNode.data;
-       let weight = minNode.priority;
-
-       network.getConnectedNodes(currNode).forEach(neighbor => {
-          let alt = distances[currNode] + get_weight(currNode, neighbor);
-          if (alt < distances[neighbor]) {
-             distances[neighbor] = alt;
-             prev[neighbor] = currNode;
-             pq.enqueue(neighbor, distances[neighbor]);
-          }
-       });
-    }
-
-    return [prev, distances];
-}
-
-/* Returns the weight of the edge between nodes curr and adj */
-function get_weight(curr, adj) {
-    if (curr < adj) {
-        return edges.get(curr+'-'+adj).weight;
-    }
-    else {
-        return edges.get(adj+'-'+curr).weight;
-    }
 }

@@ -32,6 +32,15 @@ export class Router {
         }
     }
 
+    getOutLink(targetNode) {
+        let db = this.LSDB.RIB.getRIB();
+        if (db[targetNode] === null) {
+            throw new Error("Path not possible");
+        }
+
+        return db[targetNode].advanceNode;
+    }
+
     send(msg) {
         
     }
