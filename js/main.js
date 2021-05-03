@@ -1,5 +1,8 @@
 import { Router } from './Router.js';
 import { IP } from './IPAddress.js';
+import { LSDB } from './LSDB.js';
+import { RIB } from './RIB.js';
+import { InterfaceTable } from './InterfaceTable.js';
 
 export function startNetwork() {
 
@@ -28,30 +31,18 @@ export function startNetwork() {
     { id: "8-9", from: 8, to: 9, label: '8', weight: 8},
     { id: "9-11", from: 9, to: 11, label: '7', weight: 7},
   ]);
-
-  // populate starting link-state database
-  let LSDB = []
-  edges.forEach(edge => {
-    // forwarding table format will be (dest cost)
-    let link = edge.to + " " + edge.weight;
-    LSDB.push(link);
-  });
-
+  
   // initialize each router with their own LSDB of the network topology
   routers.forEach(r => {
-    r.LSDB = LSDB;
+    r.LSDB = new LSDB(new RIB(), new InterfaceTable());
   });
-
+  
   // make nodes
   nodesArray = [];
   routers.forEach(r => {
-    let info = "ID: " + r.RID.IPInt + "\n" +
-                "LSDB: \n" + 
-                "Dest Cost\n" +
-                r.LSDB.join('\n');
-    nodesArray.push({id:r.RID.IPInt, label:r.RID.IPString, title: info})
+    nodesArray.push({id:r.RID.IPInt, label:r.RID.IPString});
   });
-
+  
   // create an array of nodes
   // set position to custom start for Group 9 topology.
   nodes = new vis.DataSet(nodesArray);
@@ -77,6 +68,33 @@ export function startNetwork() {
 
   // initialize your network!
   network = new vis.Network(container, data, options);
+
+  
+  // populate starting interface table database for each edge
+  routers.forEach(r => {
+    let edgeIds = network.getConnectedEdges(r.RID.IPInt);    
+    edgeIds.forEach(edgeStr => {
+      r.LSDB.IT.addLink(edges.get(edgeStr));
+    });
+  })
+  
+  // build up RIB tables
+  routers.forEach(r => {
+    r.buildRIB();
+  });
+
+  nodesArray = [];
+  // update title attribute
+  routers.forEach(r => {
+    let info = "ID: " + r.RID.IPInt + "\n" +
+    "LSDB: \n" + 
+    "Dest Cost\n" +
+    r.LSDB.RIBStr;
+
+    nodesArray.push({id:r.RID.IPInt, label:r.RID.IPString, title:info});
+  });
+
+  nodes.update(nodesArray);
 }
 
 startNetwork();
