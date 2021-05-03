@@ -24,9 +24,9 @@ export class Router {
         let prev = ret[1];
         let forwardingTable = getForwardingTable(prev, dist, this.RID.IPInt);
 
-        for (let i = 0; i < Object.keys(dist).length; i++) {
-            if (i+1 !== this.RID.IPInt) {
-                let link = {destination: i+1, cost: dist[i+1], advanceNode: forwardingTable[i+1]};
+        for (let i = 1; i <= Object.keys(forwardingTable).length; i++) {
+            if (i !== this.RID.IPInt) {
+                let link = {destination: i, cost: dist[i], advanceNode: forwardingTable[i]};
                 this.LSDB.RIB.add(link);
             }
         }
@@ -34,11 +34,26 @@ export class Router {
 
     getOutLink(targetNode) {
         let db = this.LSDB.RIB.getRIB();
-        if (db[targetNode] === null) {
-            throw new Error("Path not possible");
+        let ret;
+
+        if (this.RID.IPInt === targetNode) {
+            return this.RID.IPInt;
         }
 
-        return db[targetNode].advanceNode;
+        let pathPossible = false;
+
+        db.forEach(link => {
+            if (link.destination === targetNode) {
+                ret = link.advanceNode;
+                pathPossible = true;
+            }
+        });
+
+        if (pathPossible)
+            return ret;
+        else
+            throw new Error("Requested path to " + targetNode + " from " + this.RID.IPInt + " not possible!");
+            
     }
 
     send(msg) {
@@ -137,7 +152,6 @@ function getForwardingTable(prev, dist, source) {
                 // we are at the parent
                 if (prev[v] === -1)
                 {
-                    forwardingTable[i] = source;
                     connected = true;
                 }
                 // find route
