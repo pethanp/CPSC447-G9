@@ -9,17 +9,6 @@ export function startNetwork() {
     routers.push(new Router(new IP(192,168,0,i),0));
   }
 
-  nodesArray = [];
-  routers.forEach(r => {
-    let info = "ID: " + r.RID.IPInt + "\n" +
-                "LSDB: " + r.LSDB;
-    nodesArray.push({id:r.RID.IPInt, label:r.RID.IPString, title: info})
-  });
-
-  // create an array of nodes
-  // set position to custom start for Group 9 topology.
-  nodes = new vis.DataSet(nodesArray);
-
   // create an array of edges
   edges = new vis.DataSet([
     { id: "1-3", from: 1, to: 3, label: '5', weight: 5},
@@ -39,6 +28,33 @@ export function startNetwork() {
     { id: "8-9", from: 8, to: 9, label: '8', weight: 8},
     { id: "9-11", from: 9, to: 11, label: '7', weight: 7},
   ]);
+
+  // populate starting link-state database
+  let LSDB = []
+  edges.forEach(edge => {
+    // forwarding table format will be (dest cost)
+    let link = edge.to + " " + edge.weight;
+    LSDB.push(link);
+  });
+
+  // initialize each router with their own LSDB of the network topology
+  routers.forEach(r => {
+    r.LSDB = LSDB;
+  });
+
+  // make nodes
+  nodesArray = [];
+  routers.forEach(r => {
+    let info = "ID: " + r.RID.IPInt + "\n" +
+                "LSDB: \n" + 
+                "Dest Cost\n" +
+                r.LSDB.join('\n');
+    nodesArray.push({id:r.RID.IPInt, label:r.RID.IPString, title: info})
+  });
+
+  // create an array of nodes
+  // set position to custom start for Group 9 topology.
+  nodes = new vis.DataSet(nodesArray);
 
   // Provide the data in the vis format
   var data = {
