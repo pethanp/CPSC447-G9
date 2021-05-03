@@ -13,7 +13,7 @@ export class LSDB {
     }
 
     getRIB() {
-        return this.RIB;
+        return this.RIB.getRIB();
     }
 
     get RIBStr() {
