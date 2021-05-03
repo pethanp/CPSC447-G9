@@ -111,7 +111,8 @@ function sendPacket() {
         path.push(nextRouter);
         currRouter = routers[nextRouter-1];
     }
-    console.log(path);
+    
+    animatePath(path);
 }
 
 /* Function to add a new edge to the network */
@@ -151,8 +152,8 @@ function changeEdge() {
     }
 
     // update weight and label of edge
-    edges.get(edgeString).weight = weight;
-    edges.get(edgeString).label = '' + weight;
+    edges.remove(edgeString);
+    edges.add({id: edgeString, from: fromNode, to: toNode, label: '' + weight, weight: weight});
 }
 
 /* Function to remove an edge from the network */
@@ -225,5 +226,61 @@ function resetNetwork() {
         network.destroy();
     }
 
-    network = startNetwork();
+    startNetwork();
+}
+
+/* Function to color the final path after finding the shortest path */
+async function animatePath(shortestPath) {
+    // visualize routing
+    for (let i = 0; i < shortestPath.length - 1; i++) {
+        await animateEdgeColorVisited(shortestPath[i], shortestPath[i+1]);
+    }
+
+    // finalize path
+    for (let i = 0; i < shortestPath.length - 1; i++) {
+        animateEdgeColorFinal(shortestPath[i], shortestPath[i+1]);
+    }
+}
+
+/* Function to change the color of the edge between curr and adj as shortest path (aka GREEN) */
+function animateEdgeColorFinal(curr, adj) {
+    // needed to get proper edge id for the edge
+    let edgeIdString = null;
+
+    if (curr < adj) {
+        edgeIdString = curr+"-"+adj;
+    }
+    else {
+        edgeIdString = adj+"-"+curr;
+    }
+    
+    edges.update([{id: edgeIdString, background: {enabled: true, color: 'lime'}}]);
+}
+
+/* Function to change the color of the edge between curr and adj as visited (aka RED)*/
+async function animateEdgeColorVisited(curr, adj) {
+
+    // needed to get proper edge id for the edge
+    let edgeIdString = null;
+
+    if (curr < adj) {
+        edgeIdString = curr+"-"+adj;
+    }
+    else {
+        edgeIdString = adj+"-"+curr;
+    }
+    
+    // turn edge color red
+    edges.update([{id: edgeIdString, background: {enabled: true, color: 'red'}}]);
+
+    // wait 1.2 seconds and turn off color
+    await sleep(1200);
+
+    // reset edge color
+    edges.update([{id: edgeIdString, background: {enabled: true, color: 'white'}}]);
+}
+
+/* Basic sleep utility function */
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
