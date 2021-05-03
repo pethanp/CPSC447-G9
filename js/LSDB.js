@@ -6,7 +6,6 @@ export class LSDB {
     constructor(RIB, IT) {
         this.RIB = RIB;
         this.IT = IT;
-        this.LSDB = new Array();
     }
 
     setRIB(newRIB) {
