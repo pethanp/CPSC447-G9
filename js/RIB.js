@@ -1,5 +1,7 @@
 // routing information base
 // used in OSPF to store the shortest paths to each node
+// typically an entry in the RIB will be formatted as:
+//      {destination: , cost: , advanceNode: }
 export class RIB {
     constructor() {
         this.RIB = [];
