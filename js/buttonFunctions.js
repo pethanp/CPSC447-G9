@@ -100,15 +100,18 @@ function sendPacket() {
     }
 
 
-    let currRouter = routers[startNode];
+    let currRouter = routers[startNode-1];
     let path = [];
     path.push(currRouter.RID.IPInt);
+    let i = 0;
 
-    while (currRouter != routers[destinationNode]) {
+    while (currRouter !== routers[destinationNode-1]) {
         // use router LSDB to find shortest path to destinationNode
-        let nextRouter = routers[currRouter].LSDB.getOutLink(destinationNode);
-        currRouter = routers[nextRouter];
+        let nextRouter = currRouter.getOutLink(destinationNode);
+        path.push(nextRouter);
+        currRouter = routers[nextRouter-1];
     }
+    console.log(path);
 }
 
 /* Function to add a new edge to the network */
