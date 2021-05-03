@@ -186,6 +186,31 @@ function makeRouter() {
 
     // add to network
     nodes.add(newRouter);
+
+    let connections = document.getElementById('edgeConnections').value;
+    
+    // check if connections are provided
+    if (connections !== '') {
+        // parse edge connections:
+        let connectionEdges = connections.split(', ');
+
+        // parse each string pair in the following format: 'dest weight'
+        connectionEdges.forEach(pairing => {
+            let values = pairing.split(' ');
+            console.log(values);
+
+            let fromNode = routerId;
+            let toNode = parseInt(values[0]);
+            let weight = parseInt(values[1]);
+            
+            // get proper edgeIdString
+            let edgeString = '';
+            if (fromNode < toNode) edgeString = fromNode +'-'+ toNode;
+            else edgeString = toNode +'-'+ fromNode;
+
+            edges.add({id: edgeString, from: fromNode, to: toNode, label: ''+weight, weight: weight});
+        });
+    }
 }
 
 /* Function to reset the network to the default */

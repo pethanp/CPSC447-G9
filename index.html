@@ -28,7 +28,7 @@
                 <button onclick="sendPacket()">Send Packet</button>
             </div>
             <div id="edgeCreationMenu" class="menuItem2">
-                <h3>Add a new Edge:</h3>
+                <h3>Change Edges:</h3>
                 <label for="fromInput">From:</label>
                 <input type="number" id="fromInput">
                 <label for="toInput">To:</label>
@@ -41,7 +41,7 @@
             </div>
             <div id="routerCreationMenu" class="menuItem3">
                 <h3>Add a new Router:</h3>
-                <label for="edgeConnections">Enter edge Connections (from, to, weight):</label>
+                <label for="edgeConnections">Optional LSDB table: Enter edge Connections as comma-seperated list. Ex. (destNode weight, 1 5, ...):</label>
                 <input type="text" id="edgeConnections">
 
                 <button onclick="makeRouter()">Add Router</button>
