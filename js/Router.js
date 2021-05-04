@@ -19,6 +19,9 @@ export class Router {
     }
 
     buildRIB() {
+        // reset RIB
+        this.LSDB.RIB.setRIB([]);
+
         let ret = djikstraAlgorithm(this.RID.IPInt);
         let dist = ret[0];
         let prev = ret[1];
@@ -30,6 +33,8 @@ export class Router {
                 this.LSDB.RIB.add(link);
             }
         }
+
+        this.updateLSDB();
     }
 
     getOutLink(targetNode) {
@@ -58,6 +63,22 @@ export class Router {
 
     send(msg) {
         
+    }
+
+    updateLSDB() {
+        nodesArray = [];
+        let r = this;
+        
+        // update title attribute
+        let info = "ID: " + r.RID.IPInt + "\n" +
+            "LSDB: \n" + 
+            "Dest Cost link\n" +
+            "D C L\n" +
+            r.LSDB.RIBStr;
+    
+        nodesArray.push({id:r.RID.IPInt, label:r.RID.IPString, title:info});
+    
+        nodes.update(nodesArray);
     }
 };
 
