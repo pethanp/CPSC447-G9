@@ -1,4 +1,3 @@
-import { PriorityQueue } from './PriorityQueue.js';
 import { IP } from "./IPAddress.js";
 import { Router } from "./Router.js";
 import { startNetwork } from './main.js';
@@ -133,6 +132,12 @@ function makeEdge() {
 
     // add edge
     edges.add({id: edgeString, from: fromNode, to: toNode, label: '' + weight, weight: weight});
+
+    // update router Interface Tables
+    routers[fromNode-1].LSDB.IT.addLink(edges.get(edgeString));
+    routers[toNode-1].LSDB.IT.addLink(edges.get(edgeString));
+
+    updateRouters();
 }
 
 /* Function to change the */
@@ -154,6 +159,9 @@ function changeEdge() {
     // update weight and label of edge
     edges.remove(edgeString);
     edges.add({id: edgeString, from: fromNode, to: toNode, label: '' + weight, weight: weight});
+
+    // update routers
+    updateRouters();
 }
 
 /* Function to remove an edge from the network */
@@ -171,7 +179,12 @@ function removeEdge() {
         throw new Error("Edge doesn't exist.");
     }
 
+    // update router Interface Tables
+    routers[fromNode-1].LSDB.IT.removeLink(edges.get(edgeString));
+    routers[toNode-1].LSDB.IT.removeLink(edges.get(edgeString));
     edges.remove(edgeString);
+
+    updateRouters();
 }
 
 /* Function to make a new router/node in the network */
@@ -218,6 +231,8 @@ function makeRouter() {
             edges.add({id: edgeString, from: fromNode, to: toNode, label: ''+weight, weight: weight});
         });
     }
+
+    updateRouters();
 }
 
 /* Function to reset the network to the default */
@@ -283,4 +298,11 @@ async function animateEdgeColorVisited(curr, adj) {
 /* Basic sleep utility function */
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/* Function to start router updating for change in edgeIds */
+function updateRouters() {
+    routers.forEach(r => {
+        r.buildRIB();
+    });
 }

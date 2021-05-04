@@ -82,20 +82,6 @@ export function startNetwork() {
   routers.forEach(r => {
     r.buildRIB();
   });
-
-  nodesArray = [];
-  // update title attribute
-  routers.forEach(r => {
-    let info = "ID: " + r.RID.IPInt + "\n" +
-    "LSDB: \n" + 
-    "Dest Cost link\n" +
-    "D C L\n" +
-    r.LSDB.RIBStr;
-
-    nodesArray.push({id:r.RID.IPInt, label:r.RID.IPString, title:info});
-  });
-
-  nodes.update(nodesArray);
 }
 
 startNetwork();
