@@ -27,7 +27,7 @@ export class Router {
         let prev = ret[1];
         let forwardingTable = getForwardingTable(prev, dist, this.RID.IPInt);
 
-        for (let i = 1; i <= Object.keys(forwardingTable).length; i++) {
+        for (let i = 1; i <= Object.keys(prev).length; i++) {
             if (i !== this.RID.IPInt) {
                 let link = {destination: i, cost: dist[i], advanceNode: forwardingTable[i]};
                 this.LSDB.RIB.add(link);
