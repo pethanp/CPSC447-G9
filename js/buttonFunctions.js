@@ -94,6 +94,8 @@ function selectDestination() {
 
 /* Button handler for sending packet using dijkstra's */
 function sendPacket() {
+    recolorNetwork();
+    
     if (!startNode || !destinationNode) {
         throw new Error("Need to select proper start/end nodes");
     }
@@ -229,6 +231,10 @@ function makeRouter() {
             else edgeString = toNode +'-'+ fromNode;
 
             edges.add({id: edgeString, from: fromNode, to: toNode, label: ''+weight, weight: weight});
+            
+            // update router Interface Tables
+            routers[fromNode-1].LSDB.IT.addLink(edges.get(edgeString));
+            routers[toNode-1].LSDB.IT.addLink(edges.get(edgeString));
         });
     }
 
@@ -303,6 +309,30 @@ function sleep(ms) {
 /* Function to start router updating for change in edgeIds */
 function updateRouters() {
     routers.forEach(r => {
+        console.log(r.RID.IPInt);
         r.buildRIB();
     });
+}
+
+/* Function to reset the colors of the network at the beginning of every round of astar() */
+function recolorNetwork() {
+    // reset colors to visjs blue
+    let nodeIds = nodes.getIds();
+    for (let i = 0; i < nodeIds.length; i++) {
+        nodes.update([{ id: nodeIds[i], color: { background: '#97c2fc' } }]);
+    }
+
+    // reset edge colors
+    let edgeIds = edges.getIds();
+    for (let i = 0; i < edgeIds.length; i++) {
+        edges.update([{id: edgeIds[i], background: {enabled: true, color: 'white'}}]);
+    }
+
+    // recolor start/end
+    if (startNode) {
+        nodes.update([{ id: startNode, color: { background: "aquamarine" } }]);
+    }
+    if (destinationNode) {
+        nodes.update([{ id: destinationNode, color: { background: "orange" } }]);
+    }
 }
